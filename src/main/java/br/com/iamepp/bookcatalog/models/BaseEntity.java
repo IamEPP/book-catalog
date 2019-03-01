@@ -9,7 +9,9 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @MappedSuperclass
@@ -20,6 +22,9 @@ public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+
+    @Getter
+    @Setter
     private Long id;
 
     public boolean isNell() {
