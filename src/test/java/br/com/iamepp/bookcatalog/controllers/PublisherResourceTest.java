@@ -12,11 +12,16 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import br.com.iamepp.bookcatalog.services.PublisherService;
 import br.com.iamepp.bookcatalog.services.dtos.PublisherDTO;
+
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(SpringRunner.class)
@@ -44,7 +49,7 @@ public class PublisherResourceTest {
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("id").exists());;
+                .andExpect(jsonPath("id").exists());
     }
 
     @Test
@@ -60,9 +65,14 @@ public class PublisherResourceTest {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isBadRequest());
     }
 
-
     @Test
-    public void testRegisterValid() throws Exception {
-
+    public void mustFindAPublisherById() throws Exception {
+        var publisher = new PublisherDTO(1L, "Contoso", "5th avenue, 33");
+        given(publisherService.findById(1L)).willReturn(Optional.of(publisher));
+        mvc.perform(get("/publisher/1")
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk());
     }
+
+
 }
